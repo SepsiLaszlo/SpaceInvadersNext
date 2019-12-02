@@ -1,0 +1,2 @@
+Position class not x +y
+Game object class
