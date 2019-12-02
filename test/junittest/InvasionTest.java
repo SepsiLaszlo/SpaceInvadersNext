@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.CannonAnimatorThread;
 import main.Invasion;
 import main.MainMenu;
 import main.Space;
