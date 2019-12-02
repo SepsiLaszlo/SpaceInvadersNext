@@ -1,30 +1,33 @@
 package main;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
+import java.io.Serializable;
 
-public class AlienProjectile extends Projectile
-{
+/**
+ * Egy űrlény lövedékét megjelenítő osztály.
+ */
 
-	AlienProjectile(double x, double y) {
-		super(x, y);
-		super.killsAlien=false;
-		super.killsCannon=true;
-	
-		// TODO Auto-generated constructor stub
-	}
+public class AlienProjectile extends Projectile implements Serializable {
 
-	@Override
-	public void draw(Graphics g) {
-		// TODO Auto-generated method stub
-		g.setColor(Color.RED);
-		g.fillRect((int) Math.round(xPosition), (int) Math.round(yPosition), dimension.width, dimension.height);
-	}
+    AlienProjectile(double x, double y) {
+        super(x, y);
+        super.killsAlien = false;
+        super.killsCannon = true;
 
-	@Override
-	public void move() {
-		// TODO Auto-generated method stub
-		super.yPosition+=super.step;
-	}
+        // TODO Auto-generated constructor stub
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        // TODO Auto-generated method stub
+        g.setColor(Color.RED);
+        g.fillRect((int) Math.round(xPosition), (int) Math.round(yPosition), dimension.width, dimension.height);
+    }
+
+    @Override
+    public void move() {
+        // TODO Auto-generated method stub
+        super.yPosition += super.step;
+    }
 
 }

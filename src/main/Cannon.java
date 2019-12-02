@@ -1,134 +1,133 @@
 package main;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 
-import javax.swing.AbstractAction;
+/**
+ * A jatekos által mozgatható ágyú.
+ */
+public class Cannon implements Drawable, Serializable {
 
-// a jatekos altal mozgathato agyu
-public class Cannon implements Drawable,Serializable {
+    Dimension dimension = new Dimension(100, 40);
+    double xPosition = -1;
+    double yPosition = -1;
+    Direction moveDirection = Direction.NONE;
+    boolean left = false;
+    boolean right = false;
+    boolean fire = false;
+    int health = 3;
 
-	Dimension dimension = new Dimension(100, 40);
-	double xPosition = -1;
-	double yPosition = -1;
-	Direction moveDirection = Direction.NONE;
-	boolean left = false;
-	boolean right = false;
-	boolean fire =false;
-	int health=3;
+    double STEP = 2;
 
-	double STEP = 2;
+    public Cannon() {
+        initPosition();
+    }
 
-	public Cannon() {
+    private void initPosition() {
+        yPosition = Space.size.height - dimension.height;
+        xPosition = Space.size.width / 2 - dimension.height;
+    }
 
-		initPosition();
-	}
+    void fire() {
+        // System.out.println("Fire! " + xPosition + " " + yPosition);
 
-	private void initPosition() {
-		yPosition = Space.size.height - dimension.height;
-		xPosition = (int) (Space.size.width / 2 - dimension.height);
-	}
+        Space.projectiles.add(new CannnonProjectile(xPosition + dimension.width / 2, yPosition));
 
-	void fire() {
-		// System.out.println("Fire! " + xPosition + " " + yPosition);
-		
-		Space.projectiles.add(new CannnonProjectile(xPosition+dimension.width/2, yPosition));
+    }
+// a felenged�st is k�vetni kell
 
-	}
-// a felenged�st is k�vetni kell
+    public void move() {
+        // TODO Auto-generated method stub
+        if (right == left)
+            return;
 
-	public void move() {
-		// TODO Auto-generated method stub
-		if (right == left)
-			return;
+        if (left)
+            xPosition -= STEP;
+        if (right)
+            xPosition += STEP;
+    }
 
-		if (left)
-			xPosition -= STEP;
-		if (right)
-			xPosition += STEP;
-	}
-	
-	public Projectile projectileArrive(Projectile p) {
-		if (p.killsCannon && Point2D.distance(xPosition + dimension.width / 2, yPosition + dimension.height / 2,
-				p.xPosition, p.yPosition) < Math.hypot(dimension.width, dimension.height) / 2) {
-			hit();
-			return p;
-		}
-		return null;
-	}
-	@Override
-	public void draw(Graphics g) {
-		// TODO Auto-generated method stub
-		g.setColor(Color.GREEN);
-		g.fillRect((int) Math.round(xPosition), (int) Math.round(yPosition), dimension.width, dimension.height);
-		
-	}
-	
-	public void hit() {
-		
-		health--;
-		PointBar.printLives(health);
-		if(health<=0) {GameFrame.endGame();}
-	}
+    public Projectile projectileArrive(Projectile p) {
+        if (p.killsCannon && Point2D.distance(xPosition + dimension.width / 2, yPosition + dimension.height / 2,
+                p.xPosition, p.yPosition) < Math.hypot(dimension.width, dimension.height) / 2) {
+            hit();
+            return p;
+        }
+        return null;
+    }
 
-	public class StartFireAction extends AbstractAction {
+    @Override
+    public void draw(Graphics g) {
+        // TODO Auto-generated method stub
+        g.setColor(Color.GREEN);
+        g.fillRect((int) Math.round(xPosition), (int) Math.round(yPosition), dimension.width, dimension.height);
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			fire=true;
-		}
-                               
-	}
-	
-	public class StopFireAction extends AbstractAction {
+    }
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			fire=false;
-		}
+    public void hit() {
 
-	}
+        health--;
+        PointBar.printLives(health);
+        if (health <= 0) {
+            GameFrame.endGame();
+        }
+    }
 
-	public class MoveLeftAction extends AbstractAction {
+    public class StartFireAction extends AbstractAction {
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			left = true;
-		}
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            fire = true;
+        }
 
-	}
+    }
 
-	public class StopLeftAction extends AbstractAction {
+    public class StopFireAction extends AbstractAction {
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			left = false;
-		}
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            fire = false;
+        }
 
-	}
+    }
 
-	public class MoveRightAction extends AbstractAction {
+    public class MoveLeftAction extends AbstractAction {
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			right = true;
-		}
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            left = true;
+        }
 
-	}
+    }
 
-	public class StopRightAction extends AbstractAction {
+    public class StopLeftAction extends AbstractAction {
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			right = false;
-		}
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            left = false;
+        }
 
-	}
-	
-	
+    }
+
+    public class MoveRightAction extends AbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            right = true;
+        }
+
+    }
+
+    public class StopRightAction extends AbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            right = false;
+        }
+
+    }
 
 }

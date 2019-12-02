@@ -1,16 +1,15 @@
 package main;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JFrame;
-
+/**
+ * Az applikáció osztálya, a menut jelníti meg.
+ */
 public class App {
 
-	public static void main(String[] args) {
-		// AppFrame ap=new AppFrame();
+    public static void main(String[] args) {
+        // AppFrame ap=new AppFrame();
 
-		MainMenu mm = new MainMenu();
+        MainMenu mm = new MainMenu();
 
-	}
+    }
 
 }

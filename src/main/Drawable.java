@@ -1,8 +1,11 @@
 package main;
 
-import java.awt.Graphics;
+import java.awt.*;
 
+/**
+ * A kirajzolhatáságot biztosítja.
+ */
 public interface Drawable {
-	
-	void draw(Graphics g);
+
+    void draw(Graphics g);
 }

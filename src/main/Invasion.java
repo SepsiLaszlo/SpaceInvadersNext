@@ -1,193 +1,189 @@
 package main;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.sun.javadoc.Type;
 
-//az urlenyeket iranyito osztaly
-public class Invasion implements Serializable{
+/**
+ * Az Å±rlÃ©nyeket irÃ¡nyÃ­tÅ‘ osztÃ¡ly.
+ */
+public class Invasion implements Serializable {
 
-	private Direction alienDirection;
-	// private Alien[][] aliens = new Alien[5][11];
-	ArrayList<ArrayList<Alien>> aliens = new ArrayList<ArrayList<Alien>>();
-	double spacing = 1.5f;
-	int speed=5;
-	int ALIEN_POINT=10;
+    // private Alien[][] aliens = new Alien[5][11];
+    ArrayList<ArrayList<Alien>> aliens = new ArrayList<ArrayList<Alien>>();
+    double spacing = 1.5f;
+    int speed = 5;
+    int ALIEN_POINT = 10;
+    private Direction alienDirection;
 
-	// letrehozza a kezdetben a hangarban levo urlenyeket(-1,-1),majd csatapoyici=ba
-	// rendezi oket
-	public Invasion() {
-		// TODO Auto-generated constructor stub
-		createAliens();
-		getInPosition();
-	}
+    // letrehozza a kezdetben a hangarban levo urlenyeket(-1,-1),majd csatapoyici=ba
+    // rendezi oket
+    public Invasion() {
+        // TODO Auto-generated constructor stub
+        createAliens();
+        getInPosition();
+    }
 
-	public void createAliens() {
-		for (int i = 0; i < 1; i++) {
-			ArrayList<Alien> colum = new ArrayList<Alien>();
-			for (int j = 0; j < 1; j++) {
-				colum.add(new Alien(this, speed));
-			}
-			aliens.add(colum);
-		}
-	}
+    public static <T> List<T> reverseList(List<T> list) {
+        return list.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(ArrayList::new), lst -> {
+            Collections.reverse(lst);
+            return lst.stream();
+        })).collect(Collectors.toCollection(ArrayList::new));
+    }
 
-	/*
-	 * a panel meretehey aranyosan, egymastol azonos tavolsagra elhelzez az
-	 * urlenyeket
-	 */
-	
-	public void fire() {
-		if(aliens.size()==0)return;
-		
-		try {
-			getRandomAlien().fire();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		
-	}
-	public void getInPosition() {
+    /*
+     * a panel meretehey aranyosan, egymastol azonos tavolsagra elhelzez az
+     * urlenyeket
+     */
 
-		int alienWidth = Alien.dimension.width;
-		int alienHight = Alien.dimension.width;
-		int frameWidth = Space.size.width;
-		int frameHeight = Space.size.width;
+    public void createAliens() {
+        for (int i = 0; i < 11; i++) {
+            ArrayList<Alien> colum = new ArrayList<Alien>();
+            for (int j = 0; j < 5; j++) {
+                colum.add(new Alien(this, speed));
+            }
+            aliens.add(colum);
+        }
+    }
 
-		double spaceingHorizontally = frameWidth * (0.8f) / 11;
-		double spaceingVertically = frameHeight * (0.2f) / 5;
-		double offsetHorizontally = frameWidth * (0.2f) / 2;
+    public void fire() {
+        if (aliens.size() == 0) return;
 
-		for (ArrayList<Alien> cols : aliens) {
-			for (Alien alien : cols) {
+        try {
+            getRandomAlien().fire();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
 
-				int y = cols.indexOf(alien);
-				int x = aliens.indexOf(cols);
+    }
 
-				alien.setPositon(offsetHorizontally + x * spaceingHorizontally, y * spaceingVertically);
+    public void getInPosition() {
 
-			}
-		}
-	}
+        int alienWidth = Alien.dimension.width;
+        int alienHight = Alien.dimension.width;
+        int frameWidth = Space.size.width;
+        int frameHeight = Space.size.width;
 
-	/*
-	 * megjelenti as osszes urlenyt SpacePanel paintComponentje parameterzi fel
-	 */
-	public void show(Graphics g) {
+        double spaceingHorizontally = frameWidth * (0.8f) / 11;
+        double spaceingVertically = frameHeight * (0.2f) / 5;
+        double offsetHorizontally = frameWidth * (0.2f) / 2;
 
-		for (int y = 0; y < aliens.size(); y++) {
-			for (int x = 0; x < aliens.get(y).size(); x++) {
-				aliens.get(y).get(x).draw(g);
-			}
-		}
-	}
-	/*
-	 * mozgatja az osszes urlenyt fontos,hogy mindig a haladsi irany szerinti elso
-	 * sor mozogjon elosszor, mert ha nem osszecsusznak a sorok
-	 */
+        for (ArrayList<Alien> cols : aliens) {
+            for (Alien alien : cols) {
 
-	public static <T> List<T> reverseList(List<T> list) {
-		return list.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(ArrayList::new), lst -> {
-			Collections.reverse(lst);
-			return lst.stream();
-		})).collect(Collectors.toCollection(ArrayList::new));
-	}
+                int y = cols.indexOf(alien);
+                int x = aliens.indexOf(cols);
 
-	public void move() {
-		
-		if(aliens.size()<=0) {
-			createAliens();
-			getInPosition();
-		}
-		
-		if (alienDirection == Direction.LEFT) {
-			for (ArrayList<Alien> row : aliens) {
-				for (Alien alien : row) {
-					alien.move();
-				}
-			}
-		} else {
-			for (ArrayList<Alien> row : reverseList(aliens)) {
-				for (Alien alien : reverseList(row)) {
-					alien.move();
-				}
-			}
-		}
-	}
+                alien.setPositon(offsetHorizontally + x * spaceingHorizontally, y * spaceingVertically);
 
-	/*
-	 * ha egy urleny elerte a palya valmelyik szelet szol, ekkor az osszes hajo
-	 * megfordul
-	 */
-	public void changeDirection(Direction direction) {
-		alienDirection = direction;
-		for (int y = 0; y < aliens.size(); y++) {
-			for (int x = 0; x < aliens.get(y).size(); x++) {
-				aliens.get(y).get(x).setDirection(direction);
-				aliens.get(y).get(x).yPos += Alien.dimension.height;
-			}
-		}
-	}
+            }
+        }
+    }
+    /*
+     * mozgatja az osszes urlenyt fontos,hogy mindig a haladsi irany szerinti elso
+     * sor mozogjon elosszor, mert ha nem osszecsusznak a sorok
+     */
 
-	public Projectile projectileArrive(Projectile p) {
+    /*
+     * megjelenti as osszes urlenyt SpacePanel paintComponentje parameterzi fel
+     */
+    public void show(Graphics g) {
 
-		for (int y = 0; y < aliens.size(); y++) {
-			for (int x = 0; x < aliens.get(y).size(); x++) {
-				Alien a = aliens.get(y).get(x);
-				if (p.killsAlien && Point2D.distance(a.xPos + a.dimension.width / 2, a.yPos + a.dimension.height / 2,
-						p.xPosition, p.yPosition) < Math.hypot(a.dimension.width, a.dimension.height) / 2) {
-					aliens.get(y).remove(a);
-					PointBar.addPoint(ALIEN_POINT);
-					return p;
-				}
+        for (int y = 0; y < aliens.size(); y++) {
+            for (int x = 0; x < aliens.get(y).size(); x++) {
+                aliens.get(y).get(x).draw(g);
+            }
+        }
+    }
 
-			}
-		}
-		return null;
+    public void move() {
 
-	}
-	// visszaad egy véletlen ûrlényt,azért shuffle ,hogy ne kelljen a hosszokra
-	// figyelni
+        if (aliens.size() <= 0) {
+            createAliens();
+            getInPosition();
+        }
 
-	private Alien getRandomAlien() {
+        if (alienDirection == Direction.LEFT) {
+            for (ArrayList<Alien> row : aliens) {
+                for (Alien alien : row) {
+                    alien.move();
+                }
+            }
+        } else {
+            for (ArrayList<Alien> row : reverseList(aliens)) {
+                for (Alien alien : reverseList(row)) {
+                    alien.move();
+                }
+            }
+        }
+    }
 
-		
-		
-		removeEmptyCols();
-		ArrayList<ArrayList<Alien>> aliensCopy = new ArrayList<ArrayList<Alien>>();
-		aliensCopy.addAll(aliens);
+    /*
+     * ha egy urleny elerte a palya valmelyik szelet szol, ekkor az osszes hajo
+     * megfordul
+     */
+    public void changeDirection(Direction direction) {
+        alienDirection = direction;
+        for (int y = 0; y < aliens.size(); y++) {
+            for (int x = 0; x < aliens.get(y).size(); x++) {
+                aliens.get(y).get(x).setDirection(direction);
+                aliens.get(y).get(x).yPos += Alien.dimension.height;
+            }
+        }
+    }
 
-		Collections.shuffle(aliensCopy);
-		for (ArrayList<Alien> row : aliensCopy) {
-			Collections.shuffle(row);
-		}
+    public Projectile projectileArrive(Projectile p) {
 
-		
-		return aliensCopy.get(0).get(0);
+        for (int y = 0; y < aliens.size(); y++) {
+            for (int x = 0; x < aliens.get(y).size(); x++) {
+                Alien a = aliens.get(y).get(x);
+                if (p.killsAlien && Point2D.distance(a.xPos + Alien.dimension.width / 2, a.yPos + Alien.dimension.height / 2,
+                        p.xPosition, p.yPosition) < Math.hypot(Alien.dimension.width, Alien.dimension.height) / 2) {
+                    aliens.get(y).remove(a);
+                    PointBar.addPoint(ALIEN_POINT);
+                    return p;
+                }
 
-	}
-	
-	private void removeEmptyCols() {
-		ArrayList<ArrayList<Alien>> rmCols=new ArrayList<ArrayList<Alien>>(); 
-		
-		for (ArrayList<Alien> col : aliens) {
-			if (col.size()==0) {
-				rmCols.add(col);
-			}
-		}
-		aliens.removeAll(rmCols);
-		
-	}
- 
+            }
+        }
+        return null;
+
+    }
+    // visszaad egy vï¿½letlen ï¿½rlï¿½nyt,azï¿½rt shuffle ,hogy ne kelljen a hosszokra
+    // figyelni
+
+    private Alien getRandomAlien() {
+
+
+        removeEmptyCols();
+        ArrayList<ArrayList<Alien>> aliensCopy = new ArrayList<ArrayList<Alien>>();
+        aliensCopy.addAll(aliens);
+
+        Collections.shuffle(aliensCopy);
+        for (ArrayList<Alien> row : aliensCopy) {
+            Collections.shuffle(row);
+        }
+
+
+        return aliensCopy.get(0).get(0);
+
+    }
+
+    private void removeEmptyCols() {
+        ArrayList<ArrayList<Alien>> rmCols = new ArrayList<ArrayList<Alien>>();
+
+        for (ArrayList<Alien> col : aliens) {
+            if (col.size() == 0) {
+                rmCols.add(col);
+            }
+        }
+        aliens.removeAll(rmCols);
+
+    }
+
 }

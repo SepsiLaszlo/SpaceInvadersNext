@@ -1,7 +1,8 @@
 package main;
 
-//a haladasi iranyokat reprezentalja
+/**
+ *A haladási irányokat reprezentálja.
+ */
 public enum Direction {
-	LEFT,RIGHT,UP,DOWN,NONE
-
+    LEFT, RIGHT,  NONE
 }
