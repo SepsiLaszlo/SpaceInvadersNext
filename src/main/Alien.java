@@ -9,30 +9,38 @@ import java.io.Serializable;
 
 
 /**
- * Az űrlényeket reprezentá osztály.
+ * Az űrlényeket reprezentáló osztály.
  */
 public class Alien implements Drawable, Serializable {
 
-
-    public static Dimension dimension = new Dimension(40, 40);// az urhalyo merete
-    static BufferedImage image;
+    /**
+     * Egy űrlény szélességét és magasságát tárolja.
+     */
+    static Dimension dimension = new Dimension(40, 40);
+    /**
+     * Az űrlényekhez tartozó kép.
+     */
+    private static BufferedImage image;
+    /**
+     * Az űtlény helyét meghatározó koordináták.
+     */
     double xPos, yPos;
-    Invasion invasion;// az invayio aminek a tagja az urleny
-    Direction moveDirection = Direction.RIGHT;
-    double speed;
+    /**
+     * Az ivázió amihez az egyed tartozik.
+     */
+    private Invasion invasion;
+    /**
+     * Az irány amibe halad.
+     */
+    private Direction moveDirection = Direction.RIGHT;
+    /**
+     * A megadott függőleges haladási sebesség.
+     */
+    private double speed;
 
-    public Alien(int x, int y) {
-        this.xPos = x;
-        this.yPos = y;
-    }
-
-    public Alien() {
-        this.xPos = -1;
-        this.yPos = -1;
-
-
-    }
-
+    /**
+     * Űrlény létrehozása egy adott inváziban, sadott sebességgel.
+     */
     public Alien(Invasion invasion, int speed) {
         this.invasion = invasion;
         this.speed = speed;
@@ -46,17 +54,19 @@ public class Alien implements Drawable, Serializable {
 
     }
 
-    //kirajzolja az urlenyt
+
+    /**
+     * Kirajozlja az űrlényt.
+     */
     @Override
     public void draw(Graphics g) {
         //g.fillRect(xPos, yPos, dimension.width, dimension.height);
         g.drawImage(image, (int) Math.round(xPos), (int) Math.round(yPos), dimension.width, dimension.height, null);
     }
 
-    /*
-     * az uleny mozog a kivalasztott iranyba amig a palya syelet el nem eri. Ekkor
-     * szol az invayionak,hogy iranyt kell valtani az urleny aki a fordulast
-     * eszreveszi mar au uj iranyba lep ,hogy ne maradjon le a tarsaitol
+    /**
+     * Az űrlényt mozgatja a kiválasztott irányba, amíg az el nem éri a pálya szélét
+     * Ekkor az űrlény jelez az inváziónak,hogy irányt kell váltani.
      */
     public void move() {
 
@@ -84,10 +94,8 @@ public class Alien implements Drawable, Serializable {
 
     }
 
-    /*
-     * beallitja az urleny elhelyeykedeset az atvaltasra azert van szukseg,mert
-     * egyes helyek szamitasanal kialakulhat double ertek de rajzolo fuggvenyek csak
-     * az int tipust fogadjak el parameternel
+    /**
+     *un Bellítja az űrlény koordinátáit.
      */
 
     public void setPositon(double d, double e) {
@@ -97,9 +105,17 @@ public class Alien implements Drawable, Serializable {
 
     }
 
+    /**
+     *Beállítja az űrlény haladási irányát.
+     */
+
     public void setDirection(Direction direction) {
         this.moveDirection = direction;
     }
+
+    /**
+     *Kilő egy lövedéket egyed pozíciőjáből, lefelé.
+     */
 
     public void fire() {
         Space.projectiles.add(new AlienProjectile(xPos, yPos));

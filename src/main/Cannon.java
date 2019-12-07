@@ -11,34 +11,83 @@ import java.io.Serializable;
  */
 public class Cannon implements Drawable, Serializable {
 
+    /**
+     * Az ágyú szélességét és magasságát tárolja.
+     */
     Dimension dimension = new Dimension(100, 40);
+    /**
+     * Az ágyú helyzetlének x komponense.
+     */
     double xPosition = -1;
+    /**
+     * Az ágyú helyzetének y komponense.
+     */
     double yPosition = -1;
-    Direction moveDirection = Direction.NONE;
+    /**
+     * A játékos lenyomta a balra mozgás gombját.
+     */
     boolean left = false;
+    /**
+     * A játékos lenyomta a jobbra mozgás gombját.
+     */
     boolean right = false;
+    /**
+     * A játékos lenyomva tartja a lövés gombját.
+     */
     boolean fire = false;
+    /**
+     * A játékos életeinek száma.
+     */
     int health = 3;
+    /**
+     * A játkékos pontjainak száma.
+     */
+    int points = 0;
+    /**
+     * A játék végetérését jelzi.
+     */
+    boolean gameEnded = false;
 
+    /**
+     * A pixelek száma,amelyeket az ágyú egy lépés során megtesz.
+     */
     double STEP = 2;
 
+    /**
+     * Lérehozza az ágyút, elhelyezni és kiirja az adatait.
+     */
     public Cannon() {
         initPosition();
+        printState();
     }
 
+    /**
+     * A PointBar-ra kiírja az ágyú életeit és pontjait.
+     */
+    public void printState() {
+        PointBar.printLives(health);
+        PointBar.printPoints(points);
+    }
+
+    /**
+     * Elhelyezi az ágyút a panel alján és közepén.
+     */
     private void initPosition() {
         yPosition = Space.size.height - dimension.height;
         xPosition = Space.size.width / 2 - dimension.height;
     }
 
+    /**
+     * Kilő egy lövedéket az ágyú helyzetéből.
+     */
     void fire() {
-        // System.out.println("Fire! " + xPosition + " " + yPosition);
-
         Space.projectiles.add(new CannnonProjectile(xPosition + dimension.width / 2, yPosition));
 
     }
-// a felenged�st is k�vetni kell
 
+    /**
+     * Lépteti az ágyút,ha a játékos lenyomta a megfeleő gomokat.
+     */
     public void move() {
         // TODO Auto-generated method stub
         if (right == left)
@@ -50,6 +99,9 @@ public class Cannon implements Drawable, Serializable {
             xPosition += STEP;
     }
 
+    /**
+     *Megnézi, hogy a lövedék eltalálta-e az ágyút. És visszaadja ,ha igen.
+     */
     public Projectile projectileArrive(Projectile p) {
         if (p.killsCannon && Point2D.distance(xPosition + dimension.width / 2, yPosition + dimension.height / 2,
                 p.xPosition, p.yPosition) < Math.hypot(dimension.width, dimension.height) / 2) {
@@ -59,6 +111,10 @@ public class Cannon implements Drawable, Serializable {
         return null;
     }
 
+    /**
+     *Kirajzolja az ágyút.
+     */
+
     @Override
     public void draw(Graphics g) {
         // TODO Auto-generated method stub
@@ -67,15 +123,37 @@ public class Cannon implements Drawable, Serializable {
 
     }
 
+    /**
+     *Növli a pontokat.
+     */
+    public void addPoint(int point) {
+        points += point;
+        PointBar.printPoints(points);
+    }
+
+    /**
+     *Az ágyú találaltot kap.
+     */
     public void hit() {
 
         health--;
         PointBar.printLives(health);
         if (health <= 0) {
             GameFrame.endGame();
+            gameEnded = true;
         }
     }
 
+    /**
+     *Visszadja,hogy véget ért-e a játék.
+     */
+    public boolean isGameEnded() {
+        return gameEnded;
+    }
+
+    /**
+     *A játékos lenyomta a tüzelés gombot
+     */
     public class StartFireAction extends AbstractAction {
 
         @Override
@@ -85,6 +163,9 @@ public class Cannon implements Drawable, Serializable {
 
     }
 
+    /**
+     *A játékos felengedete a tüzelés gombot.
+     */
     public class StopFireAction extends AbstractAction {
 
         @Override
@@ -94,6 +175,9 @@ public class Cannon implements Drawable, Serializable {
 
     }
 
+    /**
+     *A játékos lenyomta a balra mozgás gombot.
+     */
     public class MoveLeftAction extends AbstractAction {
 
         @Override
@@ -103,6 +187,9 @@ public class Cannon implements Drawable, Serializable {
 
     }
 
+    /**
+     *A jákos felengedte a balramozgás gombot.
+     */
     public class StopLeftAction extends AbstractAction {
 
         @Override
@@ -112,6 +199,9 @@ public class Cannon implements Drawable, Serializable {
 
     }
 
+    /**
+     *A játékos lenyomta a jobbramozgás gombot.
+     */
     public class MoveRightAction extends AbstractAction {
 
         @Override
@@ -121,6 +211,9 @@ public class Cannon implements Drawable, Serializable {
 
     }
 
+    /**
+     *A játékos felengedte a jobbramozgás gombot.
+     */
     public class StopRightAction extends AbstractAction {
 
         @Override

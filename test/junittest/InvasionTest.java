@@ -19,7 +19,7 @@ public class InvasionTest {
 	MainMenu mm;
 	@Before
 	public void init() {
-		 mm = new MainMenu();
+		 mm = new MainMenu(false);
 	}
 	
 	@Test

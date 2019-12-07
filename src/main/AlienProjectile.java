@@ -4,7 +4,7 @@ import java.awt.*;
 import java.io.Serializable;
 
 /**
- * Egy űrlény lövedékét megjelenítő osztály.
+ * Egy űrlény lövedéke.
  */
 
 public class AlienProjectile extends Projectile implements Serializable {
@@ -13,16 +13,16 @@ public class AlienProjectile extends Projectile implements Serializable {
         super(x, y);
         super.killsAlien = false;
         super.killsCannon = true;
-
-        // TODO Auto-generated constructor stub
     }
+
+
 
     @Override
     public void draw(Graphics g) {
-        // TODO Auto-generated method stub
         g.setColor(Color.RED);
         g.fillRect((int) Math.round(xPosition), (int) Math.round(yPosition), dimension.width, dimension.height);
     }
+
 
     @Override
     public void move() {

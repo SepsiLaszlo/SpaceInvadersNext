@@ -7,12 +7,14 @@ import java.awt.*;
  *
  */
 public class AppFrame extends JFrame {
-
+    /**
+     * Hozzádja a kerethez a PointBart és a MainMenut
+     */
     public AppFrame() {
         setResizable(false);
 
         add(new PointBar(), BorderLayout.NORTH);
-        add(new MainMenu());
+        add(new MainMenu(false));
         setLocationRelativeTo(null);
         pack();
         setVisible(true);

@@ -1,15 +1,14 @@
 package main;
 
 /**
- * Az applikáció osztálya, a menut jelníti meg.
+ * Az applikáció osztály, megjelníti a menüt.
  */
 public class App {
-
+    /**
+     * A program belépési pontja.
+     */
     public static void main(String[] args) {
-        // AppFrame ap=new AppFrame();
-
-        MainMenu mm = new MainMenu();
-
+        MainMenu mm = new MainMenu(false);
     }
 
 }

@@ -13,34 +13,39 @@ import java.util.stream.Collectors;
  * Az űrlényeket irányítő osztály.
  */
 public class Invasion implements Serializable {
-
-    // private Alien[][] aliens = new Alien[5][11];
+    /**
+     * Az űrlényeket tárolód "Kétdimenziós" lista
+     */
     ArrayList<ArrayList<Alien>> aliens = new ArrayList<ArrayList<Alien>>();
-    double spacing = 1.5f;
-    int speed = 5;
-    int ALIEN_POINT = 10;
-    private Direction alienDirection;
 
-    // letrehozza a kezdetben a hangarban levo urlenyeket(-1,-1),majd csatapoyici=ba
-    // rendezi oket
+    /**
+     *Az űrlények által mozgáskor megtett pixelek száma.
+     */
+    int speed = 5;
+    /**
+     *Az űrlények mozgási iránya.
+     */
+    private Direction alienDirection;
+    /**
+     *Létrehozza a kezdetbena a hangárban lévő űrlényeket(-1,-1), madj csatasorba rendezyi őket,
+     */
     public Invasion() {
-        // TODO Auto-generated constructor stub
         createAliens();
         getInPosition();
     }
 
+    /**
+     *Visszaadja az paraméterként kapott lista másolatát megfordítva.
+     */
     public static <T> List<T> reverseList(List<T> list) {
         return list.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(ArrayList::new), lst -> {
             Collections.reverse(lst);
             return lst.stream();
         })).collect(Collectors.toCollection(ArrayList::new));
     }
-
-    /*
-     * a panel meretehey aranyosan, egymastol azonos tavolsagra elhelzez az
-     * urlenyeket
+    /**
+     * Létrehozza az űrlények adatastuktúrát.
      */
-
     public void createAliens() {
         for (int i = 0; i < 11; i++) {
             ArrayList<Alien> colum = new ArrayList<Alien>();
@@ -51,17 +56,21 @@ public class Invasion implements Serializable {
         }
     }
 
+    /**
+     *Véletlenszerűen választ egy űrlényt, ami lövést ad le.
+     */
     public void fire() {
         if (aliens.size() == 0) return;
-
         try {
             getRandomAlien().fire();
         } catch (Exception e) {
-            // TODO: handle exception
         }
 
     }
 
+    /**
+     *Az úrlényeket elrendezi a pályán.
+     */
     public void getInPosition() {
 
         int alienWidth = Alien.dimension.width;
@@ -84,13 +93,9 @@ public class Invasion implements Serializable {
             }
         }
     }
-    /*
-     * mozgatja az osszes urlenyt fontos,hogy mindig a haladsi irany szerinti elso
-     * sor mozogjon elosszor, mert ha nem osszecsusznak a sorok
-     */
 
     /*
-     * megjelenti as osszes urlenyt SpacePanel paintComponentje parameterzi fel
+     * Megjelníti az összes űrlényt
      */
     public void show(Graphics g) {
 
@@ -101,6 +106,9 @@ public class Invasion implements Serializable {
         }
     }
 
+    /**
+     * Lépteti az összes űrlényt.
+     */
     public void move() {
 
         if (aliens.size() <= 0) {
@@ -124,8 +132,9 @@ public class Invasion implements Serializable {
     }
 
     /*
-     * ha egy urleny elerte a palya valmelyik szelet szol, ekkor az osszes hajo
+     * Ha egy urleny elerte a palya valmelyik szelet szol, ekkor az osszes hajo
      * megfordul
+     * Ha egy űrlény elérte a pálya szélét jelez, ekkor az összes hajó megfordul.
      */
     public void changeDirection(Direction direction) {
         alienDirection = direction;
@@ -137,6 +146,9 @@ public class Invasion implements Serializable {
         }
     }
 
+    /**
+     *Megnézi,hogy az adott lövedék elaláta-e valamelyik űrlényt.
+     */
     public Projectile projectileArrive(Projectile p) {
 
         for (int y = 0; y < aliens.size(); y++) {
@@ -145,7 +157,7 @@ public class Invasion implements Serializable {
                 if (p.killsAlien && Point2D.distance(a.xPos + Alien.dimension.width / 2, a.yPos + Alien.dimension.height / 2,
                         p.xPosition, p.yPosition) < Math.hypot(Alien.dimension.width, Alien.dimension.height) / 2) {
                     aliens.get(y).remove(a);
-                    PointBar.addPoint(ALIEN_POINT);
+
                     return p;
                 }
 
@@ -154,12 +166,12 @@ public class Invasion implements Serializable {
         return null;
 
     }
-    // visszaad egy v�letlen �rl�nyt,az�rt shuffle ,hogy ne kelljen a hosszokra
-    // figyelni
 
+
+    /**
+     *Visszad egy véletlenszerűen választott űrlényt.
+     */
     private Alien getRandomAlien() {
-
-
         removeEmptyCols();
         ArrayList<ArrayList<Alien>> aliensCopy = new ArrayList<ArrayList<Alien>>();
         aliensCopy.addAll(aliens);
@@ -168,12 +180,12 @@ public class Invasion implements Serializable {
         for (ArrayList<Alien> row : aliensCopy) {
             Collections.shuffle(row);
         }
-
-
         return aliensCopy.get(0).get(0);
-
     }
 
+    /**
+     *Az üres oszlopokat kiszedi,hogy ne okozzon gondot a lista iterálása közben.
+     */
     private void removeEmptyCols() {
         ArrayList<ArrayList<Alien>> rmCols = new ArrayList<ArrayList<Alien>>();
 
@@ -183,7 +195,6 @@ public class Invasion implements Serializable {
             }
         }
         aliens.removeAll(rmCols);
-
     }
 
 }
