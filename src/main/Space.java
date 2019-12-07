@@ -19,15 +19,15 @@ public class Space extends JPanel implements Serializable {
 	/**
 	 *A játékban aktuálisan létező lövedékeket tartalmazó lista.
 	 */
-	static List<Projectile> projectiles = Collections.synchronizedList(new ArrayList<Projectile>());
+	public static List<Projectile> projectiles = Collections.synchronizedList(new ArrayList<Projectile>());
 	/**
 	 *A játékban szereplő invázió.
 	 */
-	Invasion invasion = new Invasion();
+	public Invasion invasion = new Invasion();
 	/**
 	 * A játékban szereplő ágyú.
 	 */
-	Cannon cannon = new Cannon();
+	public Cannon cannon = new Cannon();
 
 	/**
 	 *Beállítja a játék irányításához használt gombok érzékelését.

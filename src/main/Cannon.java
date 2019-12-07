@@ -18,11 +18,11 @@ public class Cannon implements Drawable, Serializable {
     /**
      * Az ágyú helyzetlének x komponense.
      */
-    double xPosition = -1;
+   public double xPosition = -1;
     /**
      * Az ágyú helyzetének y komponense.
      */
-    double yPosition = -1;
+   public double yPosition = -1;
     /**
      * A játékos lenyomta a balra mozgás gombját.
      */
@@ -51,7 +51,7 @@ public class Cannon implements Drawable, Serializable {
     /**
      * A pixelek száma,amelyeket az ágyú egy lépés során megtesz.
      */
-    double STEP = 2;
+   public double STEP = 2;
 
     /**
      * Lérehozza az ágyút, elhelyezni és kiirja az adatait.

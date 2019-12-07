@@ -12,7 +12,7 @@ public class GameFrame extends JFrame {
     /**
      * A panel, amin az aktuális játékelemek vannak.
      */
-    Space space;
+   public Space space;
     /**
      * A játékot mozgató thread példánya.
      */
