@@ -8,10 +8,12 @@ import static org.junit.Assert.assertNull;
 import  org.junit.*;
 
 import main.AnimatorThread;
+import main.App;
 import main.Cannon;
 import main.GameFrame;
 import main.Invasion;
 import main.PointBar;
+import main.Projectile;
 import main.Space;
 
 public class AppTest {
@@ -56,6 +58,24 @@ public class AppTest {
 		  c.move();
 		  assertEquals(originalX, c.xPosition,error );
 	  }	 
+	
+
+	 
+	 @Test
+	 public void TestCannonFire() {
+		 int projectileNum=s.projectiles.size();
+		 c.fire();
+		 assertEquals(projectileNum+1, s.projectiles.size());
+	 }
+	 @Test
+	 public void TestCannonProjectileMovement() {
+		 c.fire();
+		 Projectile p=s.projectiles.get(0);
+		double yPos= p.yPosition;
+		p.move();
+		assertNotEquals(yPos, p.yPosition);
+		 
+	 }
 	 
 	 
 	 @Test
@@ -67,7 +87,8 @@ public class AppTest {
 	 
 	 
 	 
-	 @Test
+	 @SuppressWarnings("deprecation")
+	@Test
 	 public void TestThread() {
 		 AnimatorThread at=new AnimatorThread(s);
 		 Exception exc=null;
@@ -76,6 +97,7 @@ public class AppTest {
 		} catch (Exception e) {
 			exc=e;
 		}
+		 at.stop();
 		 assertNull(exc);
 		 
 	 }
@@ -84,6 +106,18 @@ public class AppTest {
 		 GameFrame gf=new GameFrame();
 		 assertNotNull(gf);
 	 }
+	 @Test
+	 public void testAppFrame() {
+		 App af;
+		 Exception exc=null;
+		 try {
+			af=new App();
+		} catch (Exception e) {
+			exc=e;
+		}
+		 assertNull(exc);
+	 }
+	 
 	 @Test
 	 public void testSaveAndLoad() {
 		 GameFrame gf=new GameFrame();

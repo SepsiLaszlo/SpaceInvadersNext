@@ -80,7 +80,7 @@ public class Cannon implements Drawable, Serializable {
     /**
      * Kilő egy lövedéket az ágyú helyzetéből.
      */
-    void fire() {
+    public void fire() {
         Space.projectiles.add(new CannnonProjectile(xPosition + dimension.width / 2, yPosition));
 
     }

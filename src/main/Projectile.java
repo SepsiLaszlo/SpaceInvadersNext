@@ -11,11 +11,11 @@ public abstract class Projectile implements Drawable, Serializable {
      *A lovedékek helyzetének x komponense.
      */
 
-    double xPosition = -1;
+    public double xPosition = -1;
     /**
      *A lövedékek helyzetének y komponense.
      */
-    double yPosition = -1;
+    public double yPosition = -1;
     /**
      * A lövedék által megtett pixelek száma egy mozgás során.
      */
