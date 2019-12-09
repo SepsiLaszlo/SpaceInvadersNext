@@ -93,9 +93,9 @@ public class Cannon implements Drawable, Serializable {
         if (right == left)
             return;
 
-        if (left)
+        if (left&&xPosition-STEP>0)
             xPosition -= STEP;
-        if (right)
+        if (right&&xPosition+dimension.width+STEP<Space.size.width)
             xPosition += STEP;
     }
 
@@ -160,7 +160,7 @@ public class Cannon implements Drawable, Serializable {
         public void actionPerformed(ActionEvent e) {
             fire = true;
         }
-
+        
     }
 
     /**

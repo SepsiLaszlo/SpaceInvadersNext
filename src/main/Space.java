@@ -15,7 +15,7 @@ public class Space extends JPanel implements Serializable {
 	/**
 	 * A játék paneljének a szélességét és magasságát tároló változó
 	 */
-	public static Dimension size = new Dimension(224 * 2, 256 * 2);
+	public static Dimension size = new Dimension(224 * 3, 256 * 3);
 	/**
 	 *A játékban aktuálisan létező lövedékeket tartalmazó lista.
 	 */
