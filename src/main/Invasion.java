@@ -138,12 +138,14 @@ public class Invasion implements Serializable {
      */
     public void changeDirection(Direction direction) {
         alienDirection = direction;
-        for (int y = 0; y < aliens.size(); y++) {
-            for (int x = 0; x < aliens.get(y).size(); x++) {
-                aliens.get(y).get(x).setDirection(direction);
-                aliens.get(y).get(x).yPos += Alien.dimension.height;
+      
+        for (ArrayList<Alien> row : aliens) {
+            for (Alien alien : row) {
+                alien.setDirection(direction);
+                alien.yPos += Alien.dimension.height;
             }
         }
+        
     }
 
     /**
@@ -151,19 +153,29 @@ public class Invasion implements Serializable {
      */
     public Projectile projectileArrive(Projectile p) {
 
+    	boolean hit=false;
+    	
+    	
         for (int y = 0; y < aliens.size(); y++) {
+        	
+        	List<Alien>toBeRemoved=new ArrayList<Alien>();
             for (int x = 0; x < aliens.get(y).size(); x++) {
                 Alien a = aliens.get(y).get(x);
+                
                 if (p.killsAlien && Point2D.distance(a.xPos + Alien.dimension.width / 2, a.yPos + Alien.dimension.height / 2,
                         p.xPosition, p.yPosition) < Math.hypot(Alien.dimension.width, Alien.dimension.height) / 2) {
-                    aliens.get(y).remove(a);
-
-                    return p;
+                    //aliens.get(y).remove(a);
+                	hit=true;
+                	toBeRemoved.add(a);
+                    
                 }
 
             }
+            aliens.get(y).removeAll(toBeRemoved);
         }
-        return null;
+        
+        if(hit)return p;
+        else return null;
 
     }
 

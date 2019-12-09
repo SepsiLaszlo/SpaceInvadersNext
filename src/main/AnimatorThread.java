@@ -107,6 +107,7 @@ public class AnimatorThread extends Thread {
 
         }
         try {
+        	
             space.add(new MainMenu(true));
         } catch (Exception e) {
             // TODO: handle exception
